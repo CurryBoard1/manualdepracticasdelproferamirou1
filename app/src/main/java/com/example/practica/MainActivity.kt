@@ -1,15 +1,15 @@
-﻿package com.example.practica
+package com.example.practica
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MaterialTheme {
                 Surface(Modifier.fillMaxSize()) {
-                    Incremento()
+                    ImpresorChars()
                 }
             }
         }
@@ -25,22 +25,28 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Incremento() {
-    var contador by remember { mutableStateOf(0) }
+fun ImpresorChars() {
+    var texto by remember { mutableStateOf("") }
+    var caracteres by remember { mutableStateOf(listOf<Char>()) }
 
-    Column(
-        modifier = Modifier.fillMaxSize().systemBarsPadding(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text("Contador", fontSize = 24.sp)
-        Text("$contador", fontSize = 60.sp)
+    Column(Modifier.fillMaxSize().systemBarsPadding().padding(16.dp)) {
+        OutlinedTextField(
+            value = texto,
+            onValueChange = { texto = it },
+            label = { Text("Escribe una palabra o frase") },
+            modifier = Modifier.fillMaxWidth()
+        )
 
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Button(onClick = { contador-- }) { Text("-") }
-            Button(onClick = { contador++ }) { Text("+") }
+        Button(onClick = { caracteres = texto.toList() }) {
+            Text("Imprimir caracteres")
         }
-        Spacer(Modifier.height(12.dp))
-        Button(onClick = { contador = 0 }) { Text("Reiniciar") }
+
+        Text("Total de caracteres: ${caracteres.size}")
+
+        LazyColumn {
+            itemsIndexed(caracteres) { i, c ->
+                Text("${i + 1}: $c")
+            }
+        }
     }
 }

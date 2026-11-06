@@ -1,4 +1,4 @@
-﻿package com.example.practica
+package com.example.practica
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -17,7 +16,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MaterialTheme {
                 Surface(Modifier.fillMaxSize()) {
-                    Incremento()
+                    Cards()
                 }
             }
         }
@@ -25,22 +24,25 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Incremento() {
-    var contador by remember { mutableStateOf(0) }
+fun Cards() {
+    Column(Modifier.fillMaxSize().systemBarsPadding().padding(8.dp)) {
+        Tarjeta("Card 1", "Esta es la primera tarjeta")
+        Tarjeta("Card 2", "Esta es la segunda tarjeta")
+        Tarjeta("Card 3", "Esta es la tercera tarjeta")
+    }
+}
 
-    Column(
-        modifier = Modifier.fillMaxSize().systemBarsPadding(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+@Composable
+fun Tarjeta(titulo: String, descripcion: String) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Text("Contador", fontSize = 24.sp)
-        Text("$contador", fontSize = 60.sp)
-
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Button(onClick = { contador-- }) { Text("-") }
-            Button(onClick = { contador++ }) { Text("+") }
+        Column(Modifier.padding(16.dp)) {
+            Text(titulo, fontSize = 22.sp)
+            Text(descripcion)
         }
-        Spacer(Modifier.height(12.dp))
-        Button(onClick = { contador = 0 }) { Text("Reiniciar") }
     }
 }

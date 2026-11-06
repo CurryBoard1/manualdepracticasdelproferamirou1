@@ -11,8 +11,8 @@ android {
 
     defaultConfig {
         applicationId = "com.example.practica"
-        minSdk = 37
-        targetSdk = 37
+        minSdk = 26
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -54,3 +54,4 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
 }
+

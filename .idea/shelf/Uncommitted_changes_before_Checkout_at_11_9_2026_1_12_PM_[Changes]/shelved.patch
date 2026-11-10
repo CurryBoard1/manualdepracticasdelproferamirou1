@@ -1,0 +1,207 @@
+Index: app/src/main/java/com/example/practica/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.practica\r\n\r\nimport android.os.Bundle\r\nimport androidx.activity.ComponentActivity\r\nimport androidx.activity.compose.setContent\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.foundation.text.KeyboardOptions\r\nimport androidx.compose.material3.*\r\nimport androidx.compose.runtime.*\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.text.input.KeyboardType\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\n\r\nclass MainActivity : ComponentActivity() {\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContent {\r\n            MaterialTheme {\r\n                Surface(Modifier.fillMaxSize()) {\r\n                    Calculadora()\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n@Composable\r\nfun Calculadora() {\r\n    var num1 by remember { mutableStateOf(\"\") }\r\n    var num2 by remember { mutableStateOf(\"\") }\r\n    var resultado by remember { mutableStateOf(\"\") }\r\n\r\n    fun calcular(operacion: Char) {\r\n        val a = num1.toDoubleOrNull()\r\n        val b = num2.toDoubleOrNull()\r\n\r\n        if (a == null || b == null) {\r\n            resultado = \"Escribe dos números\"\r\n            return\r\n        }\r\n\r\n        resultado = when (operacion) {\r\n            '+' -> (a + b).toString()\r\n            '-' -> (a - b).toString()\r\n            '*' -> (a * b).toString()\r\n            else -> if (b == 0.0) \"No se puede dividir entre 0\" else (a / b).toString()\r\n        }\r\n    }\r\n\r\n    Column(Modifier.fillMaxSize().systemBarsPadding().padding(16.dp)) {\r\n        Text(\"Calculadora\", fontSize = 28.sp)\r\n\r\n        OutlinedTextField(\r\n            value = num1,\r\n            onValueChange = { num1 = it },\r\n            label = { Text(\"Primer número\") },\r\n            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),\r\n            modifier = Modifier.fillMaxWidth()\r\n        )\r\n        OutlinedTextField(\r\n            value = num2,\r\n            onValueChange = { num2 = it },\r\n            label = { Text(\"Segundo número\") },\r\n            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),\r\n            modifier = Modifier.fillMaxWidth()\r\n        )\r\n\r\n        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {\r\n            Button(onClick = { calcular('+') }) { Text(\"+\") }\r\n            Button(onClick = { calcular('-') }) { Text(\"-\") }\r\n            Button(onClick = { calcular('*') }) { Text(\"×\") }\r\n            Button(onClick = { calcular('/') }) { Text(\"÷\") }\r\n        }\r\n\r\n        Text(\"Resultado: $resultado\", fontSize = 22.sp)\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/practica/MainActivity.kt b/app/src/main/java/com/example/practica/MainActivity.kt
+--- a/app/src/main/java/com/example/practica/MainActivity.kt	(revision 33bbcb6f1c6ce40fb923c3ee9f333a1e8a42fa13)
++++ b/app/src/main/java/com/example/practica/MainActivity.kt	(date 1794251520808)
+@@ -3,12 +3,12 @@
+ import android.os.Bundle
+ import androidx.activity.ComponentActivity
+ import androidx.activity.compose.setContent
++import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.layout.*
+-import androidx.compose.foundation.text.KeyboardOptions
+ import androidx.compose.material3.*
+ import androidx.compose.runtime.*
+ import androidx.compose.ui.Modifier
+-import androidx.compose.ui.text.input.KeyboardType
++import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+ 
+@@ -18,61 +18,42 @@
+         setContent {
+             MaterialTheme {
+                 Surface(Modifier.fillMaxSize()) {
+-                    Calculadora()
++                    ColorCards()
+                 }
+             }
+         }
+     }
+ }
++
++val colores = listOf(Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.Magenta, Color.Cyan)
+ 
+ @Composable
+-fun Calculadora() {
+-    var num1 by remember { mutableStateOf("") }
+-    var num2 by remember { mutableStateOf("") }
+-    var resultado by remember { mutableStateOf("") }
+-
+-    fun calcular(operacion: Char) {
+-        val a = num1.toDoubleOrNull()
+-        val b = num2.toDoubleOrNull()
+-
+-        if (a == null || b == null) {
+-            resultado = "Escribe dos números"
+-            return
+-        }
+-
+-        resultado = when (operacion) {
+-            '+' -> (a + b).toString()
+-            '-' -> (a - b).toString()
+-            '*' -> (a * b).toString()
+-            else -> if (b == 0.0) "No se puede dividir entre 0" else (a / b).toString()
+-        }
+-    }
++fun ColorCards() {
++    Column(Modifier.fillMaxSize().systemBarsPadding().padding(8.dp)) {
++        Text("Toca una card para cambiar su color", modifier = Modifier.padding(8.dp))
++        ColorCard("Card 1", 0)
++        ColorCard("Card 2", 1)
++        ColorCard("Card 3", 2)
++        ColorCard("Card 4", 3)
++    }
++}
+ 
+-    Column(Modifier.fillMaxSize().systemBarsPadding().padding(16.dp)) {
+-        Text("Calculadora", fontSize = 28.sp)
++@Composable
++fun ColorCard(nombre: String, colorInicial: Int) {
++    var indice by remember { mutableStateOf(colorInicial) }
+ 
+-        OutlinedTextField(
+-            value = num1,
+-            onValueChange = { num1 = it },
+-            label = { Text("Primer número") },
+-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+-            modifier = Modifier.fillMaxWidth()
+-        )
+-        OutlinedTextField(
+-            value = num2,
+-            onValueChange = { num2 = it },
+-            label = { Text("Segundo número") },
+-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+-            modifier = Modifier.fillMaxWidth()
++    Card(
++        colors = CardDefaults.cardColors(containerColor = colores[indice]),
++        modifier = Modifier
++            .fillMaxWidth()
++            .padding(8.dp)
++            .clickable { indice = (indice + 1) % colores.size }
++    ) {
++        Text(
++            nombre,
++            fontSize = 22.sp,
++            color = Color.Black,
++            modifier = Modifier.padding(24.dp)
+         )
+-
+-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+-            Button(onClick = { calcular('+') }) { Text("+") }
+-            Button(onClick = { calcular('-') }) { Text("-") }
+-            Button(onClick = { calcular('*') }) { Text("×") }
+-            Button(onClick = { calcular('/') }) { Text("÷") }
+-        }
+-
+-        Text("Resultado: $resultado", fontSize = 22.sp)
+     }
+ }
+Index: .idea/deviceManager.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/deviceManager.xml b/.idea/deviceManager.xml
+new file mode 100644
+--- /dev/null	(date 1794251517311)
++++ b/.idea/deviceManager.xml	(date 1794251517311)
+@@ -0,0 +1,13 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="DeviceTable">
++    <option name="columnSorters">
++      <list>
++        <ColumnSorterState>
++          <option name="column" value="Name" />
++          <option name="order" value="ASCENDING" />
++        </ColumnSorterState>
++      </list>
++    </option>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/.name
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>quiz
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/.name b/.idea/.name
+--- a/.idea/.name	(revision 33bbcb6f1c6ce40fb923c3ee9f333a1e8a42fa13)
++++ b/.idea/.name	(date 1794251520881)
+@@ -1,1 +1,1 @@
+-quiz
+\ No newline at end of file
++talleres
+\ No newline at end of file
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"testRunner\" value=\"CHOOSE_PER_TEST\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n          </set>\r\n        </option>\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+--- a/.idea/gradle.xml	(revision 33bbcb6f1c6ce40fb923c3ee9f333a1e8a42fa13)
++++ b/.idea/gradle.xml	(date 1794251520906)
+@@ -1,5 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="GradleMigrationSettings" migrationVersion="1" />
+   <component name="GradleSettings">
+     <option name="linkedExternalProjectsSettings">
+       <GradleProjectSettings>
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"VcsDirectoryMappings\">\r\n    <mapping directory=\"\" vcs=\"Git\" />\r\n    <mapping directory=\"$PROJECT_DIR$\" vcs=\"Git\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+--- a/.idea/vcs.xml	(revision 33bbcb6f1c6ce40fb923c3ee9f333a1e8a42fa13)
++++ b/.idea/vcs.xml	(date 1794251520933)
+@@ -2,6 +2,5 @@
+ <project version="4">
+   <component name="VcsDirectoryMappings">
+     <mapping directory="" vcs="Git" />
+-    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_25\" default=\"true\" project-jdk-name=\"jbr-25\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 33bbcb6f1c6ce40fb923c3ee9f333a1e8a42fa13)
++++ b/.idea/misc.xml	(date 1794251520957)
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="ExternalStorageConfigurationManager" enabled="true" />
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_25" default="true" project-jdk-name="jbr-25" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_25" project-jdk-name="jbr-25" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">

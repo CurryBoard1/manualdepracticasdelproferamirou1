@@ -1,0 +1,129 @@
+Index: app/src/main/java/com/example/practica/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.practica\r\n\r\nimport android.os.Bundle\r\nimport androidx.activity.ComponentActivity\r\nimport androidx.activity.compose.setContent\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.foundation.lazy.LazyColumn\r\nimport androidx.compose.foundation.lazy.items\r\nimport androidx.compose.material3.*\r\nimport androidx.compose.runtime.*\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\n\r\nclass MainActivity : ComponentActivity() {\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContent {\r\n            MaterialTheme {\r\n                Surface(Modifier.fillMaxSize()) {\r\n                    CardsDinamicas()\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n@Composable\r\nfun CardsDinamicas() {\r\n    val cards = remember { mutableStateListOf(\"Card 1\", \"Card 2\") }\r\n    var numero by remember { mutableStateOf(3) }\r\n\r\n    Column(Modifier.fillMaxSize().systemBarsPadding().padding(8.dp)) {\r\n        Button(\r\n            onClick = {\r\n                cards.add(\"Card $numero\")\r\n                numero++\r\n            },\r\n            modifier = Modifier.padding(8.dp)\r\n        ) { Text(\"Agregar card\") }\r\n\r\n        LazyColumn {\r\n            items(cards, key = { it }) { nombre ->\r\n                Card(\r\n                    modifier = Modifier\r\n                        .fillMaxWidth()\r\n                        .padding(8.dp)\r\n                ) {\r\n                    Row(\r\n                        Modifier.padding(16.dp),\r\n                        verticalAlignment = Alignment.CenterVertically\r\n                    ) {\r\n                        Text(nombre, fontSize = 20.sp, modifier = Modifier.weight(1f))\r\n                        TextButton(onClick = { cards.remove(nombre) }) { Text(\"Eliminar\") }\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/app/src/main/java/com/example/practica/MainActivity.kt b/app/src/main/java/com/example/practica/MainActivity.kt
+--- a/app/src/main/java/com/example/practica/MainActivity.kt	(revision df0b5725e59ae96addb9f6b5d55b5b4e2a9debf5)
++++ b/app/src/main/java/com/example/practica/MainActivity.kt	(date 1794251544339)
+@@ -4,12 +4,11 @@
+ import androidx.activity.ComponentActivity
+ import androidx.activity.compose.setContent
+ import androidx.compose.foundation.layout.*
+-import androidx.compose.foundation.lazy.LazyColumn
+-import androidx.compose.foundation.lazy.items
++import androidx.compose.foundation.text.KeyboardOptions
+ import androidx.compose.material3.*
+ import androidx.compose.runtime.*
+-import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
++import androidx.compose.ui.text.input.KeyboardType
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+ 
+@@ -19,7 +18,7 @@
+         setContent {
+             MaterialTheme {
+                 Surface(Modifier.fillMaxSize()) {
+-                    CardsDinamicas()
++                    Calculadora()
+                 }
+             }
+         }
+@@ -27,35 +26,53 @@
+ }
+ 
+ @Composable
+-fun CardsDinamicas() {
+-    val cards = remember { mutableStateListOf("Card 1", "Card 2") }
+-    var numero by remember { mutableStateOf(3) }
++fun Calculadora() {
++    var num1 by remember { mutableStateOf("") }
++    var num2 by remember { mutableStateOf("") }
++    var resultado by remember { mutableStateOf("") }
+ 
+-    Column(Modifier.fillMaxSize().systemBarsPadding().padding(8.dp)) {
+-        Button(
+-            onClick = {
+-                cards.add("Card $numero")
+-                numero++
+-            },
+-            modifier = Modifier.padding(8.dp)
+-        ) { Text("Agregar card") }
++    fun calcular(operacion: Char) {
++        val a = num1.toDoubleOrNull()
++        val b = num2.toDoubleOrNull()
+ 
+-        LazyColumn {
+-            items(cards, key = { it }) { nombre ->
+-                Card(
+-                    modifier = Modifier
+-                        .fillMaxWidth()
+-                        .padding(8.dp)
+-                ) {
+-                    Row(
+-                        Modifier.padding(16.dp),
+-                        verticalAlignment = Alignment.CenterVertically
+-                    ) {
+-                        Text(nombre, fontSize = 20.sp, modifier = Modifier.weight(1f))
+-                        TextButton(onClick = { cards.remove(nombre) }) { Text("Eliminar") }
+-                    }
+-                }
+-            }
++        if (a == null || b == null) {
++            resultado = "Escribe dos números"
++            return
++        }
++
++        resultado = when (operacion) {
++            '+' -> (a + b).toString()
++            '-' -> (a - b).toString()
++            '*' -> (a * b).toString()
++            else -> if (b == 0.0) "No se puede dividir entre 0" else (a / b).toString()
++        }
++    }
++
++    Column(Modifier.fillMaxSize().systemBarsPadding().padding(16.dp)) {
++        Text("Calculadora", fontSize = 28.sp)
++
++        OutlinedTextField(
++            value = num1,
++            onValueChange = { num1 = it },
++            label = { Text("Primer número") },
++            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
++            modifier = Modifier.fillMaxWidth()
++        )
++        OutlinedTextField(
++            value = num2,
++            onValueChange = { num2 = it },
++            label = { Text("Segundo número") },
++            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
++            modifier = Modifier.fillMaxWidth()
++        )
++
++        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
++            Button(onClick = { calcular('+') }) { Text("+") }
++            Button(onClick = { calcular('-') }) { Text("-") }
++            Button(onClick = { calcular('*') }) { Text("×") }
++            Button(onClick = { calcular('/') }) { Text("÷") }
+         }
++
++        Text("Resultado: $resultado", fontSize = 22.sp)
+     }
+ }
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"VcsDirectoryMappings\">\r\n    <mapping directory=\"\" vcs=\"Git\" />\r\n    <mapping directory=\"$PROJECT_DIR$\" vcs=\"Git\" />\r\n  </component>\r\n</project>
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+--- a/.idea/vcs.xml	(revision df0b5725e59ae96addb9f6b5d55b5b4e2a9debf5)
++++ b/.idea/vcs.xml	(date 1794251544431)
+@@ -2,6 +2,5 @@
+ <project version="4">
+   <component name="VcsDirectoryMappings">
+     <mapping directory="" vcs="Git" />
+-    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+   </component>
+ </project>
+\ No newline at end of file

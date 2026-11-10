@@ -1,0 +1,112 @@
+Index: app/src/main/java/com/example/practica/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.practica\r\n\r\nimport android.os.Bundle\r\nimport androidx.activity.ComponentActivity\r\nimport androidx.activity.compose.setContent\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.foundation.lazy.LazyColumn\r\nimport androidx.compose.foundation.lazy.items\r\nimport androidx.compose.material3.*\r\nimport androidx.compose.runtime.*\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.unit.dp\r\n\r\nclass MainActivity : ComponentActivity() {\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContent {\r\n            MaterialTheme {\r\n                Surface(Modifier.fillMaxSize()) {\r\n                    Listas()\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n@Composable\r\nfun Listas() {\r\n    val lista = remember { mutableStateListOf(\"Manzana\", \"Pera\", \"Uva\") }\r\n    var nuevo by remember { mutableStateOf(\"\") }\r\n\r\n    Column(Modifier.fillMaxSize().systemBarsPadding().padding(16.dp)) {\r\n        Text(\"Mi lista\")\r\n\r\n        Row(verticalAlignment = Alignment.CenterVertically) {\r\n            OutlinedTextField(\r\n                value = nuevo,\r\n                onValueChange = { nuevo = it },\r\n                label = { Text(\"Nuevo elemento\") },\r\n                modifier = Modifier.weight(1f)\r\n            )\r\n            Button(\r\n                onClick = {\r\n                    lista.add(nuevo)\r\n                    nuevo = \"\"\r\n                },\r\n                enabled = nuevo.isNotBlank()\r\n            ) { Text(\"Agregar\") }\r\n        }\r\n\r\n        LazyColumn {\r\n            items(lista) { elemento ->\r\n                Row(\r\n                    Modifier.fillMaxWidth(),\r\n                    verticalAlignment = Alignment.CenterVertically\r\n                ) {\r\n                    Text(elemento, modifier = Modifier.weight(1f))\r\n                    TextButton(onClick = { lista.remove(elemento) }) { Text(\"Quitar\") }\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/practica/MainActivity.kt b/app/src/main/java/com/example/practica/MainActivity.kt
+--- a/app/src/main/java/com/example/practica/MainActivity.kt	(revision 490c9f1ffff5330f8a699e3eebe33d9bd00ea918)
++++ b/app/src/main/java/com/example/practica/MainActivity.kt	(date 1793984870611)
+@@ -27,7 +27,7 @@
+ 
+ @Composable
+ fun Listas() {
+-    val lista = remember { mutableStateListOf("Manzana", "Pera", "Uva") }
++    val lista = remember { mutableStateListOf<String>() }
+     var nuevo by remember { mutableStateOf("") }
+ 
+     Column(Modifier.fillMaxSize().systemBarsPadding().padding(16.dp)) {
+Index: .idea/deviceManager.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/deviceManager.xml b/.idea/deviceManager.xml
+new file mode 100644
+--- /dev/null	(date 1793984780207)
++++ b/.idea/deviceManager.xml	(date 1793984780207)
+@@ -0,0 +1,13 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="DeviceTable">
++    <option name="columnSorters">
++      <list>
++        <ColumnSorterState>
++          <option name="column" value="Name" />
++          <option name="order" value="ASCENDING" />
++        </ColumnSorterState>
++      </list>
++    </option>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/.name
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>quiz
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/.name b/.idea/.name
+--- a/.idea/.name	(revision 490c9f1ffff5330f8a699e3eebe33d9bd00ea918)
++++ b/.idea/.name	(date 1793984780222)
+@@ -1,1 +1,1 @@
+-quiz
+\ No newline at end of file
++talleres
+\ No newline at end of file
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"testRunner\" value=\"CHOOSE_PER_TEST\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n          </set>\r\n        </option>\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+--- a/.idea/gradle.xml	(revision 490c9f1ffff5330f8a699e3eebe33d9bd00ea918)
++++ b/.idea/gradle.xml	(date 1793984780238)
+@@ -1,5 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="GradleMigrationSettings" migrationVersion="1" />
+   <component name="GradleSettings">
+     <option name="linkedExternalProjectsSettings">
+       <GradleProjectSettings>
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"VcsDirectoryMappings\">\r\n    <mapping directory=\"\" vcs=\"Git\" />\r\n    <mapping directory=\"$PROJECT_DIR$\" vcs=\"Git\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+--- a/.idea/vcs.xml	(revision 490c9f1ffff5330f8a699e3eebe33d9bd00ea918)
++++ b/.idea/vcs.xml	(date 1793984783819)
+@@ -2,6 +2,5 @@
+ <project version="4">
+   <component name="VcsDirectoryMappings">
+     <mapping directory="" vcs="Git" />
+-    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_25\" default=\"true\" project-jdk-name=\"jbr-25\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 490c9f1ffff5330f8a699e3eebe33d9bd00ea918)
++++ b/.idea/misc.xml	(date 1793984783789)
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="ExternalStorageConfigurationManager" enabled="true" />
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_25" default="true" project-jdk-name="jbr-25" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_25" project-jdk-name="jbr-25" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">
